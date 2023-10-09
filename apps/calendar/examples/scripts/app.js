@@ -1,7 +1,5 @@
 /* eslint-disable no-var,prefer-destructuring,prefer-template,no-undef,object-shorthand,no-console */
 // for testing IE11 compatibility, this file doesn't use ES6 syntax.
-/* ES6 module in Node.js environment */
-
 (function (Calendar) {
   var cal;
   // Constants
@@ -40,8 +38,6 @@
       cal.getDateRangeStart(),
       cal.getDateRangeEnd()
     );
-    console.log(randomEvents);
-    cal.createEvents(randomEvents);
   }
 
   function getReadableViewName(viewType) {
@@ -105,9 +101,44 @@
   }
 
   function update() {
+    var url = 'http://localhost/tui.calendar-calendar-2.1.3/apps/calendar/examples/calendar.php';
+    var http = new XMLHttpRequest();
+    http.open('POST', url, true);
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    var data = 'action=' + encodeURIComponent('read') + '&method=' + encodeURIComponent('list');
+    http.onreadystatechange = function () {
+      if (http.readyState == 4 && http.status == 200) {
+        var eventData = JSON.parse(http.responseText);
+        console.log(eventData) 
+          eventData.forEach(function (event) {
+            var start = new Date (event.start * 1000);
+            var start = start.toISOString();
+            var end = new Date (event.end * 1000);
+            var end = end.toISOString();
+            cal.createEvents([
+              {
+              id: event.EventId,
+              calendarId: event.calendarId,
+              title: event.title,
+              location: event.location,
+              category: event.category,
+              isPrivate: event.isPrivate,
+              state: event.state,
+              dueDateClass: "",
+              start: start,
+              end: end,
+              isAllday: event.isAllDay,  
+              }
+            ]);
+          });
+          }
+    };
+
+ http.send(data);
     setDropdownTriggerText();
     displayRenderRange();
     reloadEvents();
+    
   }
 
   function bindAppEvents() {
@@ -196,13 +227,44 @@
         console.log('beforeCreateEvent', event);
         event.id = chance.guid();
 
+        var url = 'http://localhost/tui.calendar-calendar-2.1.3/apps/calendar/examples/calendar.php';
+        var http = new XMLHttpRequest();
+        http.open('POST', url, true);
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        // Convert the event object to a JSON string
+        var eventData = JSON.stringify(event);
+        // Create a data string that includes the event data
+        var data = 'event=' + encodeURIComponent(eventData) + '&action=' + encodeURIComponent('create');
+        console.log(data)
+        http.onreadystatechange = function () {
+          if (http.readyState == 4 && http.status == 200) {
+            // var container = document.getElementById('test');
+            // container.innerHTML = http.responseText;
+          }
+        };
+        http.send(data);
         cal.createEvents([event]);
         cal.clearGridSelections();
       },
+
       beforeUpdateEvent: function (eventInfo) {
         var event, changes;
-
         console.log('beforeUpdateEvent', eventInfo);
+        var url = 'http://localhost/tui.calendar-calendar-2.1.3/apps/calendar/examples/calendar.php';
+        var http = new XMLHttpRequest();
+        http.open('POST', url, true);
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        // Convert the event object to a JSON string
+        var eventData = JSON.stringify(eventInfo);
+        // Create a data string that includes the event data
+        var data = 'event=' + encodeURIComponent(eventData) + '&action=' + encodeURIComponent('update');
+        http.onreadystatechange = function () {
+          if (http.readyState == 4 && http.status == 200) {
+            // var container = document.getElementById('test');
+            // container.innerHTML = http.responseText;
+          }
+        };
+        http.send(data);
 
         event = eventInfo.event;
         changes = eventInfo.changes;
@@ -211,7 +273,21 @@
       },
       beforeDeleteEvent: function (eventInfo) {
         console.log('beforeDeleteEvent', eventInfo);
-
+        var url = 'http://localhost/tui.calendar-calendar-2.1.3/apps/calendar/examples/calendar.php';
+        var http = new XMLHttpRequest();
+        http.open('POST', url, true);
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        // Convert the event object to a JSON string
+        var eventData = JSON.stringify(eventInfo);
+        // Create a data string that includes the event data
+        var data = 'event=' + encodeURIComponent(eventData) + '&action=' + encodeURIComponent('delete');
+        http.onreadystatechange = function () {
+          if (http.readyState == 4 && http.status == 200) {
+            // var container = document.getElementById('test');
+            // container.innerHTML = http.responseText;
+          }
+        };
+        http.send(data);
         cal.deleteEvent(eventInfo.id, eventInfo.calendarId);
       },
     });

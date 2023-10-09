@@ -55,6 +55,7 @@
     "types/types/@(events|options|template|theme|eventBus).d.ts"
   ],
   "dependencies": {
+    "@toast-ui/calendar": "^2.1.3",
     "immer": "^9.0.15",
     "isomorphic-dompurify": "^0.20.0",
     "preact": "^10.10.0",
@@ -65,9 +66,9 @@
   "devDependencies": {
     "@storybook/addons": "^6.5.9",
     "@storybook/builder-webpack5": "^6.5.9",
-    "@storybook/core": "^6.5.9",
+    "@storybook/core": "^6.1.21",
     "@storybook/manager-webpack5": "^6.5.9",
-    "@storybook/preact": "^6.5.9",
+    "@storybook/preact": "^7.4.5",
     "@storybook/theming": "^6.5.9",
     "@types/chance": "^1.1.3",
     "chance": "^1.1.8",
@@ -76,8 +77,8 @@
     "eslint-webpack-plugin": "^3.2.0",
     "postcss": "^8.4.14",
     "postcss-loader": "^6.2.1",
-    "postcss-prefixer": "^2.1.3",
-    "storybook": "^6.5.9",
+    "postcss-prefixer": "^3.0.0",
+    "storybook": "^7.4.5",
     "style-loader": "^3.3.1",
     "stylelint": "^14.9.1",
     "stylelint-config-recommended": "^8.0.0",
