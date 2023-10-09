@@ -113,7 +113,6 @@ function generateRandomEvent(calendar, renderStart, renderEnd) {
     isReadOnly: isReadOnly,
     isPrivate: isPrivate,
     location: location,
-    attendees: attendees,
     recurrenceRule: recurrenceRule,
     state: state,
     category: category,

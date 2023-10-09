@@ -121,7 +121,7 @@
               calendarId: event.calendarId,
               title: event.title,
               location: event.location,
-              category: event.category,
+              category: "time",
               isPrivate: event.isPrivate,
               state: event.state,
               dueDateClass: "",
